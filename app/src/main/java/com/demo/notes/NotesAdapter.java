@@ -1,5 +1,6 @@
 package com.demo.notes;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -7,21 +8,38 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
+
+    ArrayList<Note> notes;
+
+    public NotesAdapter(ArrayList<Note> notes) {
+        this.notes = notes;
+    }
+
     @NonNull
     @Override
     public NotesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+        // передаем макет заметки в конструктор NotesViewHolder
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_item, parent, false);
+        return new NotesViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NotesViewHolder holder, int position) {
-
+    // принимает объект NotesViewHolder и порядковый номер элемента массива
+    public void onBindViewHolder(@NonNull NotesViewHolder notesViewHolder, int position) {
+        Note note = notes.get(position);
+        notesViewHolder.textViewTitle.setText(note.getTitle());
+        notesViewHolder.textViewDescription.setText(note.getDescription());
+        notesViewHolder.textViewDayOfWeek.setText(note.getDayOfWeek());
+        notesViewHolder.textViewPriority.setText(String.format("%s", note.getPriority()));
     }
 
     @Override
+    // возвращает кол-во элементов в массиве
     public int getItemCount() {
-        return 0;
+        return notes.size();
     }
 
     class NotesViewHolder extends RecyclerView.ViewHolder {
