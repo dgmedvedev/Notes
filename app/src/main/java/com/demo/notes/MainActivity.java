@@ -4,19 +4,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    FloatingActionButton buttonAddNote;
     private RecyclerView recyclerViewNotes;
-    private ArrayList<Note> notes = new ArrayList<>();
+    public static final ArrayList<Note> notes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        buttonAddNote = findViewById(R.id.buttonAddNote);
         recyclerViewNotes = findViewById(R.id.recyclerViewNotes);
         notes.add(new Note("Видеоконференция", "РФ", "Вторник", 2));
         notes.add(new Note("Планерка", "Гомель", "Понедельник", 1));
@@ -31,11 +36,15 @@ public class MainActivity extends AppCompatActivity {
 
         // горизонтальное последовательное расположение
         //recyclerViewNotes.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-
         // расположение сеткой
         //recyclerViewNotes.setLayoutManager(new GridLayoutManager(this, 3));
 
         // устанавливаем у RecyclerView созданный адаптер
         recyclerViewNotes.setAdapter(adapter);
+
+        buttonAddNote.setOnClickListener(view -> {
+            Intent intent = new Intent(this, AddNoteActivity.class);
+            startActivity(intent);
+        });
     }
 }
