@@ -23,12 +23,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         buttonAddNote = findViewById(R.id.buttonAddNote);
         recyclerViewNotes = findViewById(R.id.recyclerViewNotes);
-        notes.add(new Note("Видеоконференция", "РФ", "Вторник", 2));
-        notes.add(new Note("Планерка", "Гомель", "Понедельник", 1));
-        notes.add(new Note("Магазин", "ОМА", "Четверг", 2));
-        notes.add(new Note("Видеоконференция", "Казахстан", "Вторник", 3));
-        notes.add(new Note("Шашлык", "Из свинины", "Пятница", 1));
-
+        if (notes.isEmpty()) {
+            notes.add(new Note("Видеоконференция", "РФ", "Вторник", 2));
+            notes.add(new Note("Планерка", "Гомель", "Понедельник", 1));
+            notes.add(new Note("Магазин", "ОМА", "Четверг", 2));
+            notes.add(new Note("Видеоконференция", "Казахстан", "Вторник", 3));
+            notes.add(new Note("Шашлык", "Из свинины", "Пятница", 1));
+        }
         // добавляем созданный адаптер
         NotesAdapter adapter = new NotesAdapter(notes);
         // указываем расположение элементов, в данном случае (вертикальное последовательное)

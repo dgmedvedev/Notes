@@ -20,9 +20,11 @@
         android:id="@+id/buttonAddNote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:clickable="true"
+        android:contentDescription="@string/button_save_note"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/add_note_button"
         app:srcCompat="@drawable/plus" />
 </androidx.constraintlayout.widget.ConstraintLayout>

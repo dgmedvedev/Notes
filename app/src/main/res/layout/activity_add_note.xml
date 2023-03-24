@@ -7,13 +7,13 @@
     tools:context=".AddNoteActivity">
 
     <EditText
-        android:id="@+id/editTextTittle"
+        android:id="@+id/editTextTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:ems="10"
+        android:hint="@string/hint_title"
         android:inputType="textPersonName"
-        android:text="Name"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,12 +26,12 @@
         android:layout_margin="8dp"
         android:ems="10"
         android:gravity="start|top"
-        android:hint="@string/add_text_description"
+        android:hint="@string/hint_description"
         android:inputType="textMultiLine"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTittle" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextTitle" />
 
     <Spinner
         android:id="@+id/spinnerDaysOfWeek"
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/holo_red_light"
-            android:text="1" />
+            android:text="@string/priority_1" />
 
         <RadioButton
             android:id="@+id/radioButton2"
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/holo_orange_light"
-            android:text="2" />
+            android:text="@string/priority_2" />
 
         <RadioButton
             android:id="@+id/radioButton3"
@@ -74,6 +74,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/holo_green_light"
-            android:text="3" />
+            android:checked="true"
+            android:text="@string/priority_3" />
     </RadioGroup>
+
+    <Button
+        android:id="@+id/buttonSaveNote"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Добавить заметку"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroupPriority" />
 </androidx.constraintlayout.widget.ConstraintLayout>
