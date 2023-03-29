@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerViewNotes;
     public static final ArrayList<Note> notes = new ArrayList<>();
     NotesAdapter adapter;
+    private NotesDBHelper dbHelper; // 1 DB
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         buttonAddNote = findViewById(R.id.buttonAddNote);
         recyclerViewNotes = findViewById(R.id.recyclerViewNotes);
+        dbHelper = new NotesDBHelper(this); // 2 DB
+        SQLiteDatabase database = dbHelper.getWritableDatabase(); // 3 DB
         if (notes.isEmpty()) {
             notes.add(new Note("Видеоконференция", "РФ", "Вторник", 2));
             notes.add(new Note("Планерка", "Гомель", "Понедельник", 1));
@@ -34,6 +40,19 @@ public class MainActivity extends AppCompatActivity {
             notes.add(new Note("Видеоконференция", "Казахстан", "Вторник", 3));
             notes.add(new Note("Шашлык", "Из свинины", "Пятница", 1));
         }
+        for (Note note : notes) { // 4 DB
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(NotesContract.NotesEntry.COLUMN_TITLE, note.getTitle());
+            contentValues.put(NotesContract.NotesEntry.COLUMN_DESCRIPTION, note.getDescription());
+            contentValues.put(NotesContract.NotesEntry.COLUMN_DAY_OF_WEEK, note.getDayOfWeek());
+            contentValues.put(NotesContract.NotesEntry.COLUMN_PRIORITY, note.getPriority());
+            database.insert(NotesContract.NotesEntry.TABLE_NAME, null, contentValues);
+        }
+        ArrayList<Note> notesFromDB = new ArrayList<>();
+        Cursor cursor = database.query(NotesContract.NotesEntry.TABLE_NAME, null, null, null, null, null, null);
+//        while (cursor.moveToNext()){
+//            String title = cursor.getString(cursor.getColumnIndex(NotesContract.NotesEntry.COLUMN_TITLE));
+//        }
         // добавляем созданный адаптер
         adapter = new NotesAdapter(notes);
         // указываем расположение элементов, в данном случае (вертикальное последовательное)
