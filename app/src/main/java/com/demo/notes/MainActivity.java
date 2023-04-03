@@ -41,18 +41,31 @@ public class MainActivity extends AppCompatActivity {
             notes.add(new Note("Шашлык", "Из свинины", "Пятница", 1));
         }
         for (Note note : notes) { // 4 DB
-            ContentValues contentValues = new ContentValues();
+            ContentValues contentValues = new ContentValues(); // Для того, чтобы вставить запись
+            // Данные добавляются в виде пар ключ-значение (заголовок столбца-значение из заметки)
             contentValues.put(NotesContract.NotesEntry.COLUMN_TITLE, note.getTitle());
             contentValues.put(NotesContract.NotesEntry.COLUMN_DESCRIPTION, note.getDescription());
             contentValues.put(NotesContract.NotesEntry.COLUMN_DAY_OF_WEEK, note.getDayOfWeek());
             contentValues.put(NotesContract.NotesEntry.COLUMN_PRIORITY, note.getPriority());
+            // Вставляем объект contentValues в БД
             database.insert(NotesContract.NotesEntry.TABLE_NAME, null, contentValues);
         }
+        // Проверяем, что БД работает (получаем из нее информацию)
         ArrayList<Note> notesFromDB = new ArrayList<>();
-        Cursor cursor = database.query(NotesContract.NotesEntry.TABLE_NAME, null, null, null, null, null, null);
-//        while (cursor.moveToNext()){
-//            String title = cursor.getString(cursor.getColumnIndex(NotesContract.NotesEntry.COLUMN_TITLE));
-//        }
+        // Cursor используется для получения информации из БД. В нем хранятся все записи из БД
+        Cursor cursor = database.query(NotesContract.NotesEntry.TABLE_NAME,
+                null, null, null, null, null, null);
+        while (cursor.moveToNext()) { // вызвав этот метод, перешли к нулевому элементу
+            // Получаем имена колонок. getString() принимает индекс колонки, но т.к. индекс не известен,
+            // вызываем метод getColumnIndexOrThrow(), который принимает имя колонки
+            String title = cursor.getString(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_TITLE));
+            String description = cursor.getString(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_DESCRIPTION));
+            String dayOfWeek = cursor.getString(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_DAY_OF_WEEK));
+            int priority = cursor.getInt(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_PRIORITY));
+            Note note = new Note(title, description, dayOfWeek, priority);
+            notesFromDB.add(note);
+        }
+        cursor.close(); // обязательно нужно закрывать Cursor, после выполнения всех действий
         // добавляем созданный адаптер
         adapter = new NotesAdapter(notes);
         // указываем расположение элементов, в данном случае (вертикальное последовательное)
