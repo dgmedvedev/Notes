@@ -23,6 +23,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     // В RecyclerView нет встроенного setOnClickListener(), поэтому нужно создавать свой Listener
     interface OnNoteClickListener {
         void onNoteClick(int position);
+
         void onLongClick(int position);
     }
 
