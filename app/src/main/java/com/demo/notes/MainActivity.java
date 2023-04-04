@@ -89,9 +89,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void remove(int position) {
         int id = notes.get(position).getId();
-        // where - что конкретно хотим удалить из таблицы в БД
+        // where - что конкретно хотим удалить из таблицы в БД (удалить _ID, которое чему-то равно)
         String where = NotesContract.NotesEntry._ID + " = ?";
-        // whereArgs - это ? из where. Т.е. какое-то значение.
+        // whereArgs - это ? из where. Т.е. какое-то конкретное значение.
         String[] whereArgs = new String[]{Integer.toString(id)};
         // Внизу строка: удалить все из таблицы notes, где (where) _ID = whereArgs
         database.delete(NotesContract.NotesEntry.TABLE_NAME, where, whereArgs);
@@ -106,14 +106,14 @@ public class MainActivity extends AppCompatActivity {
         notes.clear();
         // Cursor используется для получения информации из БД. В нем хранятся все записи из БД
         Cursor cursor = database.query(NotesContract.NotesEntry.TABLE_NAME,
-                null, null, null, null, null, null);
+                null, null, null, null, null, NotesContract.NotesEntry.COLUMN_DAY_OF_WEEK);
         while (cursor.moveToNext()) { // вызвав этот метод, перешли к нулевому элементу
             // Получаем имена колонок. getString() принимает индекс колонки, но т.к. индекс не известен,
             // вызываем метод getColumnIndexOrThrow(), который принимает имя колонки
             int id = cursor.getInt(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry._ID));
             String title = cursor.getString(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_TITLE));
             String description = cursor.getString(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_DESCRIPTION));
-            String dayOfWeek = cursor.getString(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_DAY_OF_WEEK));
+            int dayOfWeek = cursor.getInt(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_DAY_OF_WEEK));
             int priority = cursor.getInt(cursor.getColumnIndexOrThrow(NotesContract.NotesEntry.COLUMN_PRIORITY));
             Note note = new Note(id, title, description, dayOfWeek, priority);
             notes.add(note);
