@@ -1,6 +1,7 @@
 package com.demo.notes;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
         buttonAddNote = findViewById(R.id.buttonAddNote);
         recyclerViewNotes = findViewById(R.id.recyclerViewNotes);
         dbHelper = new NotesDBHelper(this); // 2 DB
@@ -104,9 +109,13 @@ public class MainActivity extends AppCompatActivity {
     // Получение данных из БД и присваивание их массиву
     private void getData() {
         notes.clear();
+        // Если эти значения подставить в Cursor, то будут отображаться только Понедельники
+        // String selection = NotesContract.NotesEntry.COLUMN_DAY_OF_WEEK + " == ?";
+        // String[] selectionArgs = new String[]{"1"};
+
         // Cursor используется для получения информации из БД. В нем хранятся все записи из БД
         Cursor cursor = database.query(NotesContract.NotesEntry.TABLE_NAME,
-                null, null, null, null, null, NotesContract.NotesEntry.COLUMN_DAY_OF_WEEK);
+                null, null, null, null, null, NotesContract.NotesEntry.COLUMN_PRIORITY);
         while (cursor.moveToNext()) { // вызвав этот метод, перешли к нулевому элементу
             // Получаем имена колонок. getString() принимает индекс колонки, но т.к. индекс не известен,
             // вызываем метод getColumnIndexOrThrow(), который принимает имя колонки
